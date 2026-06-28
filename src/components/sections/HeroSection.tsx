@@ -1,10 +1,13 @@
 "use client";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useTranslations, useLocale } from "next-intl";
 import PremiumButton from "@/components/ui/PremiumButton";
 import HeroPhotoPanel from "@/components/sections/hero/HeroPhotoPanel";
 import HeroProgramsPanel from "@/components/sections/hero/HeroProgramsPanel";
+import { apiFetch, parseJsonResponse } from "@/lib/api-client";
 import { EASE_LUXURY } from "@/lib/motion";
+import type { WorkshopView } from "@/lib/workshops/types";
 
 export default function HeroSection() {
   const t = useTranslations("hero");
@@ -13,6 +16,27 @@ export default function HeroSection() {
   const locale = useLocale();
 
   const lines = [t("headline1"), t("headline2"), t("headline3")];
+
+  // Lifted up from HeroProgramsPanel: the photo column needs to know whether
+  // an active workshop is showing, so it can grow back to its taller frame
+  // and stay visually balanced against the now-longer programs column.
+  const [workshop, setWorkshop] = useState<WorkshopView | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const res = await apiFetch("/api/workshops?scope=featured");
+        const data = await parseJsonResponse<{ workshop: WorkshopView | null }>(res);
+        if (!cancelled) setWorkshop(data.workshop);
+      } catch {
+        // Non-critical enhancement — panels simply omit the workshop badge.
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section id="hero" className="relative w-full min-h-[100svh] flex flex-col bg-warm-mesh pt-28 sm:pt-32 lg:pt-32 pb-6 lg:pb-6">
@@ -31,7 +55,7 @@ export default function HeroSection() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.78fr_0.95fr] gap-8 lg:gap-10 items-stretch">
           {/* LEFT — photo */}
           <div className="order-2 lg:order-1">
-            <HeroPhotoPanel />
+            <HeroPhotoPanel tall={!!workshop} />
           </div>
 
           {/* CENTER — headline */}
@@ -121,7 +145,7 @@ export default function HeroSection() {
               </PremiumButton>
             </motion.div>
 
-            <HeroProgramsPanel />
+            <HeroProgramsPanel workshop={workshop} />
           </div>
         </div>
       </div>

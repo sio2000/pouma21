@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { EASE_LUXURY } from "@/lib/motion";
 
-export default function HeroPhotoPanel() {
+export default function HeroPhotoPanel({ tall = false }: { tall?: boolean }) {
   const t = useTranslations("hero");
   const locale = useLocale();
   const founderName = locale === "el" ? "Δήμητρα Γιαννουπλάκη" : "Dimitra Giannouplaki";
@@ -22,11 +22,15 @@ export default function HeroPhotoPanel() {
       <div className="absolute -bottom-6 -right-6 w-52 h-52 rounded-full bg-gold-400/20 blur-3xl -z-10" aria-hidden />
 
       {/* frameWrap holds the image frame + its floating card together, so the
-          card's offset is anchored to the photo itself. The frame keeps the
-          photo's natural ratio at a larger size, so it reaches further down
-          the column while the whole image still always shows, never cropped. */}
+          card's offset is anchored to the photo itself. `tall` switches back
+          to the taller frame when an active workshop makes the programs
+          column longer, keeping the photo visually proportionate to it. */}
       <div className="relative w-full">
-        <div className="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden shadow-strong ring-1 ring-lav-200/50">
+        <div
+          className={`relative w-full rounded-[2rem] overflow-hidden shadow-strong ring-1 ring-lav-200/50 ${
+            tall ? "aspect-[128/229]" : "aspect-[4/5]"
+          }`}
+        >
           <Image
             src="/newherosectionpik.png"
             alt={`${founderName} — The Pouma Academy`}

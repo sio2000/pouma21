@@ -1,10 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { apiFetch, parseJsonResponse } from "@/lib/api-client";
 import { getWorkshopContent } from "@/lib/workshops/content";
 import { formatWorkshopDate } from "@/lib/workshops/status";
 import { EASE_LUXURY } from "@/lib/motion";
@@ -25,30 +23,12 @@ const ArrowIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-export default function HeroProgramsPanel() {
+export default function HeroProgramsPanel({ workshop }: { workshop: WorkshopView | null }) {
   const t = useTranslations("hero");
   const tp = useTranslations("programs");
   const tc = useTranslations("cta");
   const locale = useLocale();
   const content = getWorkshopContent(locale);
-
-  const [workshop, setWorkshop] = useState<WorkshopView | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    (async () => {
-      try {
-        const res = await apiFetch("/api/workshops?scope=featured");
-        const data = await parseJsonResponse<{ workshop: WorkshopView | null }>(res);
-        if (!cancelled) setWorkshop(data.workshop);
-      } catch {
-        // Non-critical enhancement — the panel simply omits the badge.
-      }
-    })();
-    return () => {
-      cancelled = true;
-    };
-  }, []);
 
   return (
     <div className="w-full max-w-md mx-auto lg:max-w-none lg:mx-0">
