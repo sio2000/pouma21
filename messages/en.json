@@ -37,8 +37,24 @@
     "quotesLabel": "Sound familiar?",
     "scrollHint": "Discover",
     "photoBadge": "Communication Coach",
+    "founderEyebrow": "The Founder",
+    "founderCredential": "19 years of experience",
     "founderIntro1": "Communication coach with 19 years of experience.",
     "founderIntro2": "I teach you to express yourself in English with confidence.",
+    "empathyLabel": "Sound familiar?",
+    "empathy": [
+      "I know, but I'm afraid.",
+      "I think I'll say it wrong.",
+      "I'll forget everything.",
+      "I'll make mistakes and they'll laugh.",
+      "I go to speak, but I freeze.",
+      "I want to speak English, but I get stuck.",
+      "I understand everything, but I can't reply.",
+      "I'm embarrassed by my accent.",
+      "Others sound confident. I don't.",
+      "I lose opportunities because I stay silent.",
+      "I want to, but something stops me."
+    ],
     "programsLabel": "Course Programs"
   },
   "intro": {

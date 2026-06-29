@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from "next-intl";
 import PremiumButton from "@/components/ui/PremiumButton";
 import HeroPhotoPanel from "@/components/sections/hero/HeroPhotoPanel";
 import HeroProgramsPanel from "@/components/sections/hero/HeroProgramsPanel";
+import HeroEmpathyRotator from "@/components/sections/hero/HeroEmpathyRotator";
 import { apiFetch, parseJsonResponse } from "@/lib/api-client";
 import { EASE_LUXURY } from "@/lib/motion";
 import type { WorkshopView } from "@/lib/workshops/types";
@@ -16,6 +17,13 @@ export default function HeroSection() {
   const locale = useLocale();
 
   const lines = [t("headline1"), t("headline2"), t("headline3")];
+
+  // The client asked for the opening word ("Speak" / "Μίλησε") to read with more
+  // intensity. Split it off so it can carry the vivid gold gradient + glow while
+  // the rest of the motto keeps its delicate script flow.
+  const motto = t("motto");
+  const mottoFirst = motto.split(" ")[0];
+  const mottoRest = motto.slice(mottoFirst.length);
 
   // Lifted up from HeroProgramsPanel: the photo column needs to know whether
   // an active workshop is showing, so it can grow back to its taller frame
@@ -52,9 +60,9 @@ export default function HeroSection() {
         </motion.h2>
 
         {/* Three columns on desktop: photo · headline · programs + workshop. */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_0.78fr_0.95fr] gap-8 lg:gap-10 items-stretch">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,0.8fr)] gap-8 lg:gap-10 items-stretch">
           {/* LEFT — photo */}
-          <div className="order-2 lg:order-1">
+          <div className="order-2 lg:order-1 lg:flex lg:items-center">
             <HeroPhotoPanel tall={!!workshop} />
           </div>
 
@@ -66,7 +74,10 @@ export default function HeroSection() {
               transition={{ duration: 0.9, ease: EASE_LUXURY }}
               className="font-script text-lg sm:text-xl text-gold-500 mb-1.5"
             >
-              {t("motto")}
+              <span className="text-gold text-[1.5em] leading-none align-[-0.06em] drop-shadow-[0_2px_12px_rgba(245,179,53,0.45)]">
+                {mottoFirst}
+              </span>
+              {mottoRest}
             </motion.p>
 
             <motion.div
@@ -104,6 +115,10 @@ export default function HeroSection() {
                 </div>
               ))}
             </div>
+
+            {/* The "I know how you feel" beat — rotating inner fears, between
+                the photo and the programs, as the client requested. */}
+            <HeroEmpathyRotator />
 
             <motion.div
               initial={{ opacity: 0, y: 14 }}
