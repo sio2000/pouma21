@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { EASE_LUXURY, EASE_OUT_EXPO } from "@/lib/motion";
+import { EASE_LUXURY } from "@/lib/motion";
 
 export default function HeroPhotoPanel({ tall = false }: { tall?: boolean }) {
   const t = useTranslations("hero");
@@ -71,16 +71,6 @@ export default function HeroPhotoPanel({ tall = false }: { tall?: boolean }) {
                 className="object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-plum/30 via-transparent to-transparent" />
-
-              {/* One-time sheen sweep as the frame appears — an elegant glint,
-                  not a loop, so it never distracts. */}
-              <motion.span
-                aria-hidden
-                initial={{ x: "-130%" }}
-                animate={{ x: "130%" }}
-                transition={{ duration: 1.5, delay: 1.15, ease: EASE_OUT_EXPO }}
-                className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/35 to-transparent"
-              />
 
               {/* Top-left glass badge — two-word identity */}
               <motion.div

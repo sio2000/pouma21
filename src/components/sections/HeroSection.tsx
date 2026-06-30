@@ -11,19 +11,9 @@ import { EASE_LUXURY } from "@/lib/motion";
 import type { WorkshopView } from "@/lib/workshops/types";
 
 export default function HeroSection() {
-  const t = useTranslations("hero");
   const tNav = useTranslations("nav");
   const tBrand = useTranslations("brand");
   const locale = useLocale();
-
-  const lines = [t("headline1"), t("headline2"), t("headline3")];
-
-  // The client asked for the opening word ("Speak" / "Μίλησε") to read with more
-  // intensity. Split it off so it can carry the vivid gold gradient + glow while
-  // the rest of the motto keeps its delicate script flow.
-  const motto = t("motto");
-  const mottoFirst = motto.split(" ")[0];
-  const mottoRest = motto.slice(mottoFirst.length);
 
   // Lifted up from HeroProgramsPanel: the photo column needs to know whether
   // an active workshop is showing, so it can grow back to its taller frame
@@ -66,85 +56,12 @@ export default function HeroSection() {
             <HeroPhotoPanel tall={!!workshop} />
           </div>
 
-          {/* CENTER — headline */}
-          <div className="order-1 lg:order-2 flex flex-col justify-center text-center lg:text-left">
-            <motion.p
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.9, ease: EASE_LUXURY }}
-              className="font-script text-lg sm:text-xl text-gold-500 mb-1.5"
-            >
-              <span className="text-gold text-[1.5em] leading-none align-[-0.06em] drop-shadow-[0_2px_12px_rgba(245,179,53,0.45)]">
-                {mottoFirst}
-              </span>
-              {mottoRest}
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: -8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: EASE_LUXURY }}
-              className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/70 border border-lav-200/60 backdrop-blur-md mb-3 mx-auto lg:mx-0 shadow-soft"
-            >
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-70 animate-ping" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-gold-400" />
-              </span>
-              <span className="text-[9px] font-semibold uppercase tracking-[0.24em] text-lav-700">
-                {t("tagline")}
-              </span>
-            </motion.div>
-
-            <div className="mb-6 space-y-0.5">
-              {lines.map((line, i) => (
-                <div key={i} className="overflow-hidden py-0.5">
-                  <motion.h1
-                    initial={{ y: "110%", opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{
-                      duration: 1.0,
-                      delay: 0.2 + i * 0.08,
-                      ease: EASE_LUXURY,
-                    }}
-                    className={`text-display-xl block text-[clamp(1.3rem,2.1vw,1.85rem)] leading-[1.1] ${
-                      i === 1 ? "text-gradient" : "text-plum"
-                    }`}
-                  >
-                    {line}
-                  </motion.h1>
-                </div>
-              ))}
-            </div>
-
-            {/* The "I know how you feel" beat — rotating inner fears, between
-                the photo and the programs, as the client requested. */}
+          {/* CENTER — the empathy beat only. Per client feedback the centre is
+              stripped of all "noise" (motto, badge, headline, CTAs); only the
+              rotating inner-fears rotator remains, with its label pulled up to
+              the top. Conversion stays via the right column's "Κλείσε Θέση". */}
+          <div className="order-1 lg:order-2 flex flex-col justify-start lg:pt-1">
             <HeroEmpathyRotator />
-
-            <motion.div
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.65, ease: EASE_LUXURY }}
-              className="flex flex-col gap-3 items-center lg:items-stretch"
-            >
-              <PremiumButton href={`/${locale}/contact`} variant="primary" size="md">
-                {t("cta1")}
-                <motion.svg
-                  className="w-3.5 h-3.5"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                  animate={{ x: [0, 5, 0] }}
-                  transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut", delay: 2 }}
-                  aria-hidden
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </motion.svg>
-              </PremiumButton>
-              <PremiumButton href="#puma" variant="secondary" size="md">
-                {t("whyName")}
-              </PremiumButton>
-            </motion.div>
           </div>
 
           {/* RIGHT — booking CTA + programs + workshop */}
