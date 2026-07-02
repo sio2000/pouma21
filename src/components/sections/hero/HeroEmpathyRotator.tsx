@@ -5,111 +5,91 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { EASE_LUXURY } from "@/lib/motion";
 
-/** How many lines stack before the cascade clears, and the beat between lines. */
+/** Number of imaginary lines the phrase steps down through, and the hold time. */
 const MAX_LINES = 5;
-const STEP_MS = 1500;
+const HOLD_MS = 2600;
 
 /**
- * The "I know how you feel" beat the client asked for. The label sits up top;
- * beneath it the visitor's own inner fears surface one after another, each new
- * line settling a step lower than the last until five are stacked — then the
- * stack clears and the cascade begins again with the next set of phrases,
- * looping endlessly. Calm and elegant, never bursting into the eye.
+ * The "I know how you feel" beat. A bold script label leads (same typeface as
+ * the brand tagline "Η φωνή σου, αναδειγμένη"); beneath it ONE inner fear shows
+ * at a time. The first appears on the top imaginary line; once it fades out the
+ * next appears one line LOWER; then the next lower still — stepping down through
+ * five lines, then wrapping back to the top. Only ever one phrase on screen.
  */
 export default function HeroEmpathyRotator() {
   const t = useTranslations("hero");
   const phrases = t.raw("empathy") as string[];
   const label = t("empathyLabel");
   const reduce = useReducedMotion();
-
-  // `start` is the index of the first phrase in the current cascade; `count`
-  // is how many lines are currently revealed (1 → MAX_LINES, then resets).
-  const [start, setStart] = useState(0);
-  const [count, setCount] = useState(1);
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    if (reduce || phrases.length === 0) return;
+    if (reduce || phrases.length <= 1) return;
     const id = setInterval(() => {
-      setCount((c) => {
-        if (c < MAX_LINES) return c + 1;
-        // Stack is full — advance to the next batch and start over.
-        setStart((s) => (s + MAX_LINES) % phrases.length);
-        return 1;
-      });
-    }, STEP_MS);
+      setIndex((i) => (i + 1) % phrases.length);
+    }, HOLD_MS);
     return () => clearInterval(id);
   }, [reduce, phrases.length]);
 
-  // With reduced motion we simply show the first full set, static.
-  const lineCount = reduce ? Math.min(MAX_LINES, phrases.length) : count;
-  const visible = Array.from({ length: lineCount }, (_, i) => {
-    const idx = (start + i) % phrases.length;
-    return { idx, text: phrases[idx] };
-  });
+  // Which imaginary line (0 = top … MAX_LINES-1 = bottom) this phrase sits on.
+  const slot = index % MAX_LINES;
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, delay: 0.4, ease: EASE_LUXURY }}
+      transition={{ duration: 0.8, delay: 0.35, ease: EASE_LUXURY }}
     >
-      {/* Label — pulled to the top, with a soft pulsing cue. */}
-      <div className="flex items-center gap-3 mb-6 justify-center lg:justify-start">
-        <span className="relative flex h-1.5 w-1.5" aria-hidden>
-          <span className="absolute inline-flex h-full w-full rounded-full bg-gold-400 opacity-70 animate-ping" />
-          <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-gold-400" />
-        </span>
-        <span className="text-[11px] font-semibold uppercase tracking-[0.26em] text-lav-700">
+      {/* Prominent script label — same typeface as the brand tagline, enlarged
+          so it clearly leads the eye (client: "make 'Νιώθεις ότι' bolder"). */}
+      <div className="mb-6 text-center lg:text-left">
+        <span className="font-script leading-none text-plum text-[clamp(2.3rem,3.8vw,3.4rem)] drop-shadow-[0_2px_16px_rgba(120,80,160,0.20)]">
           {label}
         </span>
         <span
-          className="h-px flex-1 max-w-[5rem] bg-gradient-to-r from-gold-400/60 to-transparent"
+          className="mt-3 block h-[3px] w-24 mx-auto lg:mx-0 rounded-full bg-gradient-to-r from-gold-400 via-gold-300 to-transparent"
           aria-hidden
         />
       </div>
 
-      {/* Cascade stage. A soft halo + reserved height keep the layout steady as
-          the lines fill in one after another, descending down the column. */}
-      <div className="relative" aria-live="polite">
+      {/* Stage of five imaginary lines. One phrase at a time, absolutely placed
+          on its line, so each successive phrase sits lower than the last. */}
+      <div className="relative min-h-[16rem] sm:min-h-[17rem]" aria-live="polite">
         <div
           aria-hidden
           className="pointer-events-none absolute -inset-x-5 -inset-y-4 -z-10 rounded-[2.25rem] bg-gradient-to-br from-lav-100/55 via-transparent to-gold-100/45 blur-2xl opacity-80"
         />
-        <ul className="flex flex-col gap-2.5 sm:gap-3 min-h-[15rem]">
-          <AnimatePresence mode="popLayout" initial={false}>
-            {visible.map(({ idx, text }) => (
-              <motion.li
-                key={`${start}-${idx}`}
-                layout
-                initial={
-                  reduce
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: -16, filter: "blur(6px)" }
-                }
-                animate={
-                  reduce
-                    ? { opacity: 1 }
-                    : { opacity: 1, y: 0, filter: "blur(0px)" }
-                }
-                exit={
-                  reduce
-                    ? { opacity: 0 }
-                    : { opacity: 0, y: 22, filter: "blur(6px)" }
-                }
-                transition={{ duration: 0.6, ease: EASE_LUXURY }}
-                className="font-display italic text-[clamp(1.05rem,1.45vw,1.4rem)] leading-snug text-plum text-center lg:text-left"
-              >
-                <span
-                  className="font-display not-italic text-gold-400 text-[1.4em] leading-none mr-1 align-[-0.3em]"
-                  aria-hidden
-                >
-                  &ldquo;
-                </span>
-                {text}
-              </motion.li>
-            ))}
-          </AnimatePresence>
-        </ul>
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.p
+            key={index}
+            initial={
+              reduce
+                ? { opacity: 0 }
+                : { opacity: 0, y: 14, filter: "blur(6px)" }
+            }
+            animate={
+              reduce
+                ? { opacity: 1 }
+                : { opacity: 1, y: 0, filter: "blur(0px)" }
+            }
+            exit={
+              reduce
+                ? { opacity: 0 }
+                : { opacity: 0, y: -14, filter: "blur(6px)" }
+            }
+            transition={{ duration: 0.55, ease: EASE_LUXURY }}
+            style={{ top: `${slot * (100 / MAX_LINES)}%` }}
+            className="absolute inset-x-0 font-display italic text-[clamp(1.25rem,1.7vw,1.65rem)] leading-snug text-plum text-center lg:text-left"
+          >
+            <span
+              className="font-display not-italic text-gold-400 text-[1.45em] leading-none mr-1.5 align-[-0.32em]"
+              aria-hidden
+            >
+              &ldquo;
+            </span>
+            {phrases[index]}
+          </motion.p>
+        </AnimatePresence>
       </div>
     </motion.div>
   );

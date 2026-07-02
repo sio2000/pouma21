@@ -36,15 +36,15 @@ export default function HeroProgramsPanel({ workshop }: { workshop: WorkshopView
         initial={{ opacity: 0, y: 14 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, delay: 0.4, ease: EASE_LUXURY }}
-        className="flex items-center gap-3 mb-3"
+        className="flex items-center gap-3 mb-4"
       >
-        <span className="h-px w-8 bg-gradient-to-r from-gold-400 to-transparent" aria-hidden />
-        <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-lav-700">
+        <span className="h-px w-10 bg-gradient-to-r from-gold-400 to-transparent" aria-hidden />
+        <span className="text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-lav-700">
           {t("programsLabel")}
         </span>
       </motion.div>
 
-      <ul className="space-y-2">
+      <ul className="space-y-3">
         {PATH_KEYS.map((key, i) => (
           <motion.li
             key={key}
@@ -54,7 +54,7 @@ export default function HeroProgramsPanel({ workshop }: { workshop: WorkshopView
           >
             <Link
               href={`/${locale}/programs`}
-              className="group relative flex items-center gap-3 overflow-hidden rounded-2xl bg-white/90 backdrop-blur-md border-2 border-lav-100 px-4 py-2.5 shadow-soft transition-all duration-300 hover:border-gold-400 hover:bg-gold-50/60 hover:shadow-gold-glow hover:-translate-y-1"
+              className="group relative flex items-center gap-4 overflow-hidden rounded-2xl bg-white/90 backdrop-blur-md border-2 border-lav-100 px-5 py-4 shadow-soft transition-all duration-300 hover:border-gold-400 hover:bg-gold-50/60 hover:shadow-gold-glow hover:-translate-y-1"
             >
               {/* Gold sweep that wipes across on hover — matches the intro-cards effect */}
               <span
@@ -68,19 +68,19 @@ export default function HeroProgramsPanel({ workshop }: { workshop: WorkshopView
               />
 
               <span
-                className={`relative flex-shrink-0 h-2.5 w-2.5 rounded-full ${PATH_ACCENT[key]} transition-transform duration-300 group-hover:scale-125`}
+                className={`relative flex-shrink-0 h-3 w-3 rounded-full ${PATH_ACCENT[key]} transition-transform duration-300 group-hover:scale-125`}
                 aria-hidden
               />
               <span className="relative flex-1 min-w-0">
-                <span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-lav-600/80 mb-0.5 transition-colors duration-300 group-hover:text-gold-600">
+                <span className="block text-[11px] sm:text-xs font-bold uppercase tracking-[0.14em] text-lav-600/80 mb-1 transition-colors duration-300 group-hover:text-gold-600">
                   {tp(`${key}.number`)} · {tp(`${key}.tag`)}
                 </span>
-                <span className="block font-sans font-bold text-sm sm:text-base text-plum leading-snug truncate">
+                <span className="block font-sans font-bold text-lg sm:text-xl text-plum leading-snug">
                   {tp(`${key}.title`)}
                 </span>
               </span>
-              <span className="relative flex-shrink-0 flex h-7 w-7 items-center justify-center rounded-full bg-lav-50 text-lav-500 transition-all duration-300 group-hover:bg-gold-400 group-hover:text-white group-hover:scale-110">
-                <ArrowIcon className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+              <span className="relative flex-shrink-0 flex h-9 w-9 items-center justify-center rounded-full bg-lav-50 text-lav-500 transition-all duration-300 group-hover:bg-gold-400 group-hover:text-white group-hover:scale-110">
+                <ArrowIcon className="w-5 h-5 transition-transform group-hover:translate-x-0.5" />
               </span>
             </Link>
           </motion.li>
@@ -91,11 +91,11 @@ export default function HeroProgramsPanel({ workshop }: { workshop: WorkshopView
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.95, ease: EASE_LUXURY }}
-        className="mt-3"
+        className="mt-4"
       >
         <Link
           href={`/${locale}/programs`}
-          className="inline-flex items-center gap-1.5 text-sm font-semibold text-lav-700 hover:text-lav-800 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm sm:text-base font-semibold text-lav-700 hover:text-lav-800 transition-colors"
         >
           {tc("secondary")}
           <ArrowIcon className="w-3.5 h-3.5" />
