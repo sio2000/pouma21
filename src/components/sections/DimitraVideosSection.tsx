@@ -134,7 +134,12 @@ function VideoModal({
   );
 }
 
-export default function DimitraVideosSection() {
+/**
+ * The three tappable video cards + their modal. Reused in two places:
+ *  - `compact` (default off): the standalone "Γνώρισε τη Δήμητρα" section.
+ *  - `compact` on: a tight, symmetric strip tucked under the Method cards.
+ */
+export function DimitraVideoGrid({ compact = false }: { compact?: boolean }) {
   const t = useTranslations("dimitraVideos");
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px" });
@@ -145,6 +150,94 @@ export default function DimitraVideosSection() {
     dimitra2: t("video2Title"),
     dimitra3: t("video3Title"),
   };
+
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "grid items-stretch",
+        compact
+          ? "grid-cols-3 gap-3 sm:gap-4 max-w-xl mx-auto"
+          : "grid-cols-1 md:grid-cols-3 gap-8 md:gap-10"
+      )}
+    >
+      {DIMITRA_VIDEOS.map((video, i) => (
+        <motion.button
+          key={video.id}
+          type="button"
+          initial={{ opacity: 0, y: compact ? 24 : 36 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.75, delay: 0.12 + i * 0.1, ease: EASE_LUXURY }}
+          onClick={() => setActive(video)}
+          className={cn(
+            "group text-left w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-lav-500 focus-visible:ring-offset-2 focus-visible:ring-offset-lav-50 rounded-[1.35rem]",
+            compact
+              ? "rotate-0 hover:-translate-y-1"
+              : cn(CARD_TILT[i % CARD_TILT.length], "max-lg:rotate-0 lg:hover:rotate-0 lg:hover:-translate-y-1"),
+            "transition-transform duration-500"
+          )}
+          aria-label={`${t("play")}: ${titles[video.id]}`}
+        >
+          <div
+            className={cn(
+              "relative overflow-hidden bg-white shadow-soft ring-1 ring-lav-200/60 group-hover:shadow-glow group-hover:ring-lav-400/50 transition-all duration-500",
+              compact ? "rounded-xl" : "rounded-[1.35rem]"
+            )}
+          >
+            <div className={cn("relative", compact ? "aspect-[3/4]" : "aspect-[4/5] md:aspect-[3/4]")}>
+              <Image
+                src={video.poster}
+                alt=""
+                fill
+                className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                sizes={compact ? "(max-width: 768px) 33vw, 180px" : "(max-width: 768px) 100vw, 33vw"}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-plum-mid/65 via-lav-700/15 to-lav-400/10" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span
+                  className={cn(
+                    "flex items-center justify-center rounded-full bg-white/90 text-lav-600 shadow-medium ring-1 ring-lav-300/70 border border-white/60 group-hover:scale-110 group-hover:ring-gold-300/70 transition-all duration-500",
+                    compact ? "w-9 h-9 md:w-10 md:h-10" : "w-12 h-12 md:w-14 md:h-14"
+                  )}
+                >
+                  <PlayIcon className={compact ? "w-4 h-4 ml-0.5" : "w-5 h-5 ml-0.5"} />
+                </span>
+              </div>
+              <div className={cn("absolute bottom-0 left-0 right-0", compact ? "p-2.5 md:p-3" : "p-5 md:p-6")}>
+                <p
+                  className={cn(
+                    "font-display text-white leading-snug",
+                    compact ? "text-sm md:text-base" : "text-xl md:text-2xl"
+                  )}
+                >
+                  {titles[video.id]}
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.button>
+      ))}
+
+      <AnimatePresence>
+        {active && (
+          <VideoModal
+            video={active}
+            title={titles[active.id]}
+            playLabel={t("play")}
+            fullscreenLabel={t("fullscreen")}
+            closeLabel={t("close")}
+            onClose={() => setActive(null)}
+          />
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default function DimitraVideosSection() {
+  const t = useTranslations("dimitraVideos");
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-10% 0px" });
 
   return (
     <section
@@ -181,62 +274,8 @@ export default function DimitraVideosSection() {
           <p className="mt-5 text-plum/55 text-base md:text-lg leading-relaxed">{t("body")}</p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10 items-stretch">
-          {DIMITRA_VIDEOS.map((video, i) => (
-            <motion.button
-              key={video.id}
-              type="button"
-              initial={{ opacity: 0, y: 36 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.85, delay: 0.12 + i * 0.1, ease: EASE_LUXURY }}
-              onClick={() => setActive(video)}
-              className={cn(
-                "group text-left w-full cursor-pointer focus:outline-none focus-visible:ring-2 focus-visible:ring-lav-500 focus-visible:ring-offset-2 focus-visible:ring-offset-lav-50 rounded-[1.35rem] max-lg:rotate-0",
-                CARD_TILT[i % CARD_TILT.length],
-                "lg:hover:rotate-0 lg:hover:-translate-y-1 transition-transform duration-500"
-              )}
-              aria-label={`${t("play")}: ${titles[video.id]}`}
-            >
-              <div className="relative rounded-[1.35rem] overflow-hidden bg-white shadow-soft ring-1 ring-lav-200/60 group-hover:shadow-glow group-hover:ring-lav-400/50 transition-all duration-500">
-                <div className="relative aspect-[4/5] md:aspect-[3/4]">
-                  <Image
-                    src={video.poster}
-                    alt=""
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                    sizes="(max-width: 768px) 100vw, 33vw"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-plum-mid/65 via-lav-700/15 to-lav-400/10" />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-white/90 text-lav-600 shadow-medium ring-1 ring-lav-300/70 border border-white/60 group-hover:scale-110 group-hover:ring-gold-300/70 transition-all duration-500">
-                      <PlayIcon className="w-5 h-5 ml-0.5" />
-                    </span>
-                  </div>
-                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6">
-                    <p className="font-display text-xl md:text-2xl text-white leading-snug">
-                      {titles[video.id]}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </motion.button>
-          ))}
-        </div>
-
+        <DimitraVideoGrid />
       </div>
-
-      <AnimatePresence>
-        {active && (
-          <VideoModal
-            video={active}
-            title={titles[active.id]}
-            playLabel={t("play")}
-            fullscreenLabel={t("fullscreen")}
-            closeLabel={t("close")}
-            onClose={() => setActive(null)}
-          />
-        )}
-      </AnimatePresence>
     </section>
   );
 }

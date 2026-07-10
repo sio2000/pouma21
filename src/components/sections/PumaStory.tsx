@@ -2,6 +2,7 @@
 import { useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useTranslations } from "next-intl";
+import PumaSilhouette from "@/components/puma/PumaSilhouette";
 
 export default function PumaStory() {
   const t = useTranslations("puma");
@@ -25,16 +26,26 @@ export default function PumaStory() {
         <div className="w-full h-full rounded-full bg-radial from-gold-400/12 to-transparent blur-3xl" />
       </motion.div>
 
-      {/* Ghost letter */}
-      <div className="absolute inset-0 flex items-center justify-end pr-8 pointer-events-none overflow-hidden">
-        <motion.span
-          initial={{ opacity: 0, x: 80 }}
-          animate={inView ? { opacity: 0.035, x: 0 } : {}}
-          transition={{ duration: 1.8, delay: 0.3 }}
-          className="font-display text-[8rem] sm:text-[12rem] lg:text-[20rem] text-white leading-none select-none font-bold"
+      {/* Puma prowling out of the shadow — the power watching from within. */}
+      <div className="absolute inset-0 flex items-center justify-end pointer-events-none overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, x: 90 }}
+          animate={inView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 1.8, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="relative w-[420px] sm:w-[620px] lg:w-[880px] -mr-16 sm:-mr-10"
         >
-          P
-        </motion.span>
+          <div className="opacity-[0.1] mix-blend-screen">
+            <PumaSilhouette gradientId="puma-story" />
+          </div>
+          {/* Glowing eye that breathes in the dark. */}
+          <motion.span
+            className="absolute left-[89%] top-[50.5%] h-2.5 w-2.5 rounded-full bg-gold-200"
+            style={{ boxShadow: "0 0 22px 7px color-mix(in srgb, var(--color-gold-300) 80%, transparent)" }}
+            initial={{ opacity: 0 }}
+            animate={inView ? { opacity: [0.4, 1, 0.4] } : {}}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 1.2 }}
+          />
+        </motion.div>
       </div>
 
       <motion.div ref={ref} style={{ y: textY }} className="max-w-3xl mx-auto relative z-10">

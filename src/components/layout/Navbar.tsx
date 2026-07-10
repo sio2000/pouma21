@@ -19,8 +19,14 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const { scrollY } = useScroll();
-  const bgOpacity = useTransform(scrollY, [0, 100], [0, 1]);
-  const borderOpacity = useTransform(scrollY, [0, 100], [0, 1]);
+  // Pages with a dark, full-bleed hero (workshop) keep the classic
+  // transparent-at-top bar so the white nav text reads over the dark image.
+  // Everywhere else the bar keeps a solid (glass) background from the very top,
+  // so the wordmark and links never bleed into the page content while
+  // scrolling — it only deepens very slightly once the user starts to scroll.
+  const hasDarkHero = pathname.includes("/workshop/");
+  const bgOpacity = useTransform(scrollY, [0, 60], hasDarkHero ? [0, 1] : [0.97, 1]);
+  const borderOpacity = useTransform(scrollY, [0, 80], hasDarkHero ? [0, 1] : [0.55, 1]);
   const [scrolled, setScrolled] = useState(false);
   useMotionValueEvent(scrollY, "change", (v) => setScrolled(v > 80));
 
@@ -54,8 +60,7 @@ export default function Navbar() {
   // Pages with a dark, full-bleed hero need light nav text until the user
   // scrolls and the (light) glass background fades in. The homepage hero is
   // light, so it follows the default (dark-text) nav styling.
-  const darkHero = pathname.includes("/workshop/");
-  const onDark = darkHero && !scrolled;
+  const onDark = hasDarkHero && !scrolled;
 
   const handleLogoClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (isHome) {

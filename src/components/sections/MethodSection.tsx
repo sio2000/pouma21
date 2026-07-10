@@ -3,9 +3,11 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { EASE_LUXURY } from "@/lib/motion";
+import { DimitraVideoGrid } from "@/components/sections/DimitraVideosSection";
 
 export default function MethodSection() {
   const t = useTranslations("method");
+  const tVideos = useTranslations("dimitraVideos");
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-12% 0px" });
   const stages = t.raw("stages") as string[];
@@ -66,6 +68,14 @@ export default function MethodSection() {
               </p>
             </motion.div>
           ))}
+        </div>
+
+        {/* Compact video strip tucked symmetrically beneath the method cards —
+            short, tappable glimpses of Δήμητρα, kept small so they support the
+            cards rather than dominate the section. */}
+        <div className="mt-12 md:mt-14">
+          <div className="rule-ornament mb-6 w-fit mx-auto">{tVideos("label")}</div>
+          <DimitraVideoGrid compact />
         </div>
       </div>
     </section>

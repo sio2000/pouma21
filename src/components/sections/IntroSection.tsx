@@ -149,10 +149,15 @@ export default function IntroSection() {
           transition={{ duration: 0.8, delay: 0.95, ease: EASE_LUXURY }}
           className="mt-12 flex justify-center"
         >
-          <PremiumButton href={`/${locale}/contact`} variant="gold" size="lg" className="rounded-full px-7">
+          <PremiumButton
+            href={`/${locale}/contact`}
+            variant="gold"
+            size="lg"
+            className="rounded-full px-12 py-6 text-lg sm:text-xl tracking-wide shadow-gold-glow"
+          >
             {t("cta")}
             <motion.svg
-              className="w-4 h-4"
+              className="w-5 h-5 sm:w-6 sm:h-6"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

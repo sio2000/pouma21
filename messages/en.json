@@ -55,7 +55,16 @@
       "I lose opportunities because I stay silent.",
       "I want to, but something stops me."
     ],
-    "programsLabel": "Course Programs"
+    "programsLabel": "Course Programs",
+    "servicesLabel": "My services",
+    "aboutLabel": "Who I am",
+    "aboutMore": "More about me",
+    "aboutFacts": [
+      "19 years teaching across Greece, Europe & the USA",
+      "Boutique groups of 3–4 people",
+      "Focus on expression, not endless drills",
+      "You speak English from day one"
+    ]
   },
   "intro": {
     "eyebrow": "Why The Pouma Academy",

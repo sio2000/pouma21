@@ -5,16 +5,13 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useTranslations } from "next-intl";
 import { EASE_LUXURY } from "@/lib/motion";
 
-/** Number of imaginary lines the phrase steps down through, and the hold time. */
-const MAX_LINES = 5;
 const HOLD_MS = 2600;
 
 /**
  * The "I know how you feel" beat. A bold script label leads (same typeface as
- * the brand tagline "Η φωνή σου, αναδειγμένη"); beneath it ONE inner fear shows
- * at a time. The first appears on the top imaginary line; once it fades out the
- * next appears one line LOWER; then the next lower still — stepping down through
- * five lines, then wrapping back to the top. Only ever one phrase on screen.
+ * the brand tagline); beneath it ONE inner fear shows at a time inside a
+ * compact glass card, cross-fading with a soft blur. Kept tight so the hero
+ * reads confident and full rather than empty.
  */
 export default function HeroEmpathyRotator() {
   const t = useTranslations("hero");
@@ -31,19 +28,16 @@ export default function HeroEmpathyRotator() {
     return () => clearInterval(id);
   }, [reduce, phrases.length]);
 
-  // Which imaginary line (0 = top … MAX_LINES-1 = bottom) this phrase sits on.
-  const slot = index % MAX_LINES;
-
   return (
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.8, delay: 0.35, ease: EASE_LUXURY }}
+      className="lg:pt-1"
     >
-      {/* Prominent script label — same typeface as the brand tagline, enlarged
-          so it clearly leads the eye (client: "make 'Νιώθεις ότι' bolder"). */}
-      <div className="mb-6 text-center lg:text-left">
-        <span className="font-script leading-none text-plum text-[clamp(2.3rem,3.8vw,3.4rem)] drop-shadow-[0_2px_16px_rgba(120,80,160,0.20)]">
+      {/* Prominent script label — same typeface as the brand tagline. */}
+      <div className="mb-5 text-center lg:text-left">
+        <span className="font-script leading-none text-plum text-[clamp(2.2rem,3.6vw,3.2rem)] drop-shadow-[0_2px_16px_rgba(120,80,160,0.20)]">
           {label}
         </span>
         <span
@@ -52,37 +46,26 @@ export default function HeroEmpathyRotator() {
         />
       </div>
 
-      {/* Stage of five imaginary lines. One phrase at a time, absolutely placed
-          on its line, so each successive phrase sits lower than the last. */}
-      <div className="relative min-h-[16rem] sm:min-h-[17rem]" aria-live="polite">
+      {/* Compact glass card holding one rotating fear at a time. */}
+      <div
+        className="relative overflow-hidden rounded-[1.75rem] bg-white/60 backdrop-blur-md border border-lav-100 shadow-soft px-6 py-6 min-h-[8.5rem] flex items-center"
+        aria-live="polite"
+      >
         <div
           aria-hidden
-          className="pointer-events-none absolute -inset-x-5 -inset-y-4 -z-10 rounded-[2.25rem] bg-gradient-to-br from-lav-100/55 via-transparent to-gold-100/45 blur-2xl opacity-80"
+          className="pointer-events-none absolute -inset-x-2 -inset-y-2 -z-10 rounded-[2rem] bg-gradient-to-br from-lav-100/60 via-transparent to-gold-100/50 blur-2xl"
         />
         <AnimatePresence mode="wait" initial={false}>
           <motion.p
             key={index}
-            initial={
-              reduce
-                ? { opacity: 0 }
-                : { opacity: 0, y: 14, filter: "blur(6px)" }
-            }
-            animate={
-              reduce
-                ? { opacity: 1 }
-                : { opacity: 1, y: 0, filter: "blur(0px)" }
-            }
-            exit={
-              reduce
-                ? { opacity: 0 }
-                : { opacity: 0, y: -14, filter: "blur(6px)" }
-            }
-            transition={{ duration: 0.55, ease: EASE_LUXURY }}
-            style={{ top: `${slot * (100 / MAX_LINES)}%` }}
-            className="absolute inset-x-0 font-display italic text-[clamp(1.25rem,1.7vw,1.65rem)] leading-snug text-plum text-center lg:text-left"
+            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 12, filter: "blur(6px)" }}
+            animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
+            exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12, filter: "blur(6px)" }}
+            transition={{ duration: 0.5, ease: EASE_LUXURY }}
+            className="font-display italic text-[clamp(1.35rem,1.9vw,1.85rem)] leading-snug text-plum text-center lg:text-left"
           >
             <span
-              className="font-display not-italic text-gold-400 text-[1.45em] leading-none mr-1.5 align-[-0.32em]"
+              className="font-display not-italic text-gold-400 text-[1.4em] leading-none mr-1.5 align-[-0.3em]"
               aria-hidden
             >
               &ldquo;
