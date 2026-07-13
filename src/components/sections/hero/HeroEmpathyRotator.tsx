@@ -16,7 +16,9 @@ const HOLD_MS = 2600;
 export default function HeroEmpathyRotator() {
   const t = useTranslations("hero");
   const phrases = t.raw("empathy") as string[];
+  const eyebrow = t("empathyEyebrow");
   const label = t("empathyLabel");
+  const answer = t("empathyAnswer");
   const reduce = useReducedMotion();
   const [index, setIndex] = useState(0);
 
@@ -35,18 +37,15 @@ export default function HeroEmpathyRotator() {
       transition={{ duration: 0.8, delay: 0.35, ease: EASE_LUXURY }}
       className="lg:pt-1"
     >
-      {/* Prominent script label — same typeface as the brand tagline. */}
-      <div className="mb-5 text-center lg:text-left">
-        <span className="font-script leading-none text-plum text-[clamp(2.2rem,3.6vw,3.2rem)] drop-shadow-[0_2px_16px_rgba(120,80,160,0.20)]">
-          {label}
+      {/* Small eyebrow that frames the rotating fears as a shared, familiar feeling. */}
+      <div className="mb-3.5 flex items-center gap-2.5 justify-center lg:justify-start">
+        <span className="h-px w-8 bg-gradient-to-r from-gold-400 to-transparent" aria-hidden />
+        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-lav-700">
+          {eyebrow}
         </span>
-        <span
-          className="mt-3 block h-[3px] w-24 mx-auto lg:mx-0 rounded-full bg-gradient-to-r from-gold-400 via-gold-300 to-transparent"
-          aria-hidden
-        />
       </div>
 
-      {/* Compact glass card holding one rotating fear at a time. */}
+      {/* Compact glass card holding one rotating fear at a time — the "problem". */}
       <div
         className="relative overflow-hidden rounded-[1.75rem] bg-white/60 backdrop-blur-md border border-lav-100 shadow-soft px-6 py-6 min-h-[8.5rem] flex items-center"
         aria-live="polite"
@@ -74,6 +73,36 @@ export default function HeroEmpathyRotator() {
           </motion.p>
         </AnimatePresence>
       </div>
+
+      {/* Connector — a thin vertical line that visually flows the eye from the
+          "problem" card straight down into the explanation, so the answer reads
+          as a continuation rather than a separate block. */}
+      <div className="flex justify-center lg:justify-start" aria-hidden>
+        <span className="ml-0 lg:ml-8 block h-6 w-px bg-gradient-to-b from-gold-300 to-lav-300/50" />
+      </div>
+
+      {/* The reason + the fix — one smooth thought that says: we know why this
+          happens, and here is how we solve it. */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.6, ease: EASE_LUXURY }}
+        className="relative overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-lav-50/90 via-white/80 to-gold-50/80 border border-lav-100 shadow-soft px-6 py-5 sm:px-7 sm:py-6"
+      >
+        {/* Warm accent bar on the leading edge. */}
+        <span
+          className="absolute inset-y-4 left-0 w-1 rounded-full bg-gradient-to-b from-gold-400 to-lav-400"
+          aria-hidden
+        />
+        <p className="pl-3 text-center lg:text-left">
+          <span className="font-script leading-none text-plum text-[clamp(1.7rem,2.6vw,2.35rem)] drop-shadow-[0_2px_14px_rgba(120,80,160,0.18)]">
+            {label}
+          </span>
+          <span className="mt-2.5 block text-[clamp(1rem,1.15vw,1.15rem)] leading-relaxed text-plum/80">
+            {answer}
+          </span>
+        </p>
+      </motion.div>
     </motion.div>
   );
 }

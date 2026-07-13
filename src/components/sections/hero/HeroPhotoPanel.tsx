@@ -35,7 +35,8 @@ export default function HeroPhotoPanel() {
       <div className="absolute -top-10 -left-8 w-44 h-44 rounded-full bg-lav-400/25 blur-3xl -z-10" aria-hidden />
       <div className="absolute -bottom-6 -right-6 w-52 h-52 rounded-full bg-gold-400/20 blur-3xl -z-10" aria-hidden />
 
-      {/* Framed photo */}
+      {/* Framed photo — the "who I am" facts now live INSIDE the frame, as a
+          frosted panel occupying the lower part of the image (client request). */}
       <div className="relative w-full">
         {/* Gradient hairline frame — a soft lavender→gold border */}
         <div className="relative w-full rounded-[2.2rem] p-[3px] bg-gradient-to-br from-lav-300/80 via-white/50 to-gold-300/80 shadow-strong">
@@ -48,7 +49,8 @@ export default function HeroPhotoPanel() {
               sizes="(max-width: 1024px) 80vw, 34vw"
               className="object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-plum/35 via-transparent to-transparent" />
+            {/* Deep bottom gradient so the frosted facts panel stays legible. */}
+            <div className="absolute inset-0 bg-gradient-to-t from-plum/85 via-plum/25 to-transparent" />
 
             {/* Top-left glass badge — two-word identity */}
             <motion.div
@@ -63,59 +65,54 @@ export default function HeroPhotoPanel() {
               </span>
             </motion.div>
 
-            {/* Bottom name plate on the image */}
-            <div className="absolute inset-x-4 bottom-4">
-              <span className="block font-display text-white text-lg sm:text-xl leading-tight drop-shadow-[0_2px_10px_rgba(20,11,40,0.6)]">
-                {founderName}
-              </span>
-              <span className="block text-[10px] font-semibold uppercase tracking-[0.24em] text-gold-200 mt-0.5">
-                {t("founderEyebrow")}
-              </span>
-            </div>
+            {/* Frosted "who I am" panel anchored to the bottom of the image —
+                name plate + facts + more link, all sharing the photo's space. */}
+            <motion.div
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5, ease: EASE_LUXURY }}
+              className="absolute inset-x-3 bottom-3 rounded-[1.25rem] bg-white/12 border border-white/25 backdrop-blur-xl shadow-soft px-4 py-3 sm:px-4"
+            >
+              {/* Name plate + label on one compact row */}
+              <div className="flex items-end justify-between gap-3 mb-2">
+                <span className="font-display text-white text-base leading-tight drop-shadow-[0_2px_10px_rgba(20,11,40,0.6)]">
+                  {founderName}
+                </span>
+                <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-gold-100 whitespace-nowrap pb-0.5">
+                  {t("aboutLabel")}
+                </span>
+              </div>
+
+              <ul className="space-y-1">
+                {facts.map((fact, i) => (
+                  <motion.li
+                    key={fact}
+                    initial={{ opacity: 0, x: -12 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.5, delay: 0.65 + i * 0.09, ease: EASE_LUXURY }}
+                    className="flex items-start gap-2"
+                  >
+                    <span className="mt-[2px] flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded-full bg-gold-300/90 text-plum">
+                      <CheckIcon className="h-2 w-2" />
+                    </span>
+                    <span className="text-[12px] leading-tight text-white/90 drop-shadow-[0_1px_6px_rgba(20,11,40,0.5)]">
+                      {fact}
+                    </span>
+                  </motion.li>
+                ))}
+              </ul>
+
+              <Link
+                href={`/${locale}/about`}
+                className="group mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-100 hover:text-white transition-colors"
+              >
+                {t("aboutMore")}
+                <ArrowIcon className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </motion.div>
           </div>
         </div>
       </div>
-
-      {/* "Who I am" — a short block of facts under the photo, with a "more" link
-          into the full /about page (client request). */}
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.5, ease: EASE_LUXURY }}
-        className="mt-6 rounded-[1.6rem] bg-white/70 backdrop-blur-md border border-lav-100 shadow-soft px-5 py-5"
-      >
-        <div className="flex items-center gap-2.5 mb-3.5">
-          <span className="h-px w-8 bg-gradient-to-r from-gold-400 to-transparent" aria-hidden />
-          <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-lav-700">
-            {t("aboutLabel")}
-          </span>
-        </div>
-
-        <ul className="space-y-2.5">
-          {facts.map((fact, i) => (
-            <motion.li
-              key={fact}
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.65 + i * 0.09, ease: EASE_LUXURY }}
-              className="flex items-start gap-3"
-            >
-              <span className="mt-0.5 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-full bg-gold-200/70 text-gold-600">
-                <CheckIcon className="h-3 w-3" />
-              </span>
-              <span className="text-sm leading-snug text-plum/80">{fact}</span>
-            </motion.li>
-          ))}
-        </ul>
-
-        <Link
-          href={`/${locale}/about`}
-          className="group mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-lav-700 hover:text-gold-600 transition-colors"
-        >
-          {t("aboutMore")}
-          <ArrowIcon className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
-        </Link>
-      </motion.div>
     </motion.div>
   );
 }
