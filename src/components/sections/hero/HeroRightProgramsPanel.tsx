@@ -100,7 +100,7 @@ export default function HeroRightProgramsPanel() {
       </motion.div>
 
       {/* 2-column grid with clean white cards with colors & effects — matching the reference image */}
-      <ul className="grid grid-cols-2 gap-3 w-full">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
         {services.map((service, i) => {
           const accent = ACCENTS[i % ACCENTS.length];
           return (
@@ -115,7 +115,7 @@ export default function HeroRightProgramsPanel() {
             >
               <Link
                 href={`/${locale}/programs`}
-                className={`group relative flex flex-col h-full overflow-hidden rounded-2xl border border-white/40 bg-gradient-to-br ${accent.tint} px-4 py-4 shadow-[0_8px_32px_rgba(58,23,128,0.08)] hover:shadow-[0_16px_48px_rgba(58,23,128,0.12)] transition-[box-shadow] duration-300`}
+                className={`group relative flex flex-col h-full min-h-[11rem] overflow-hidden rounded-[1.5rem] border border-white/50 bg-gradient-to-br ${accent.tint} px-5 py-5 shadow-[0_12px_42px_rgba(58,23,128,0.1)] hover:shadow-[0_20px_58px_rgba(58,23,128,0.16)] transition-all duration-300`}
               >
                 {/* Colour bar across the top */}
                 <span
@@ -136,13 +136,13 @@ export default function HeroRightProgramsPanel() {
                 />
 
                 {/* Small decorative icon/number in top right */}
-                <div className="relative flex items-start justify-between mb-3 z-10">
-                  <span className={`${accent.num} text-xs font-semibold`}>
+                <div className="relative flex items-start justify-between mb-4 z-10">
+                  <span className={`${accent.num} text-sm font-semibold`}>
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <svg
-                    width="18"
-                    height="18"
+                    width="20"
+                    height="20"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
@@ -155,7 +155,7 @@ export default function HeroRightProgramsPanel() {
                 </div>
 
                 {/* Service title */}
-                <span className="relative block font-sans font-bold text-sm leading-snug text-plum group-hover:text-plum/90 transition-colors z-10">
+                <span className="relative block font-sans font-bold text-base sm:text-lg leading-snug text-plum group-hover:text-plum/90 transition-colors z-10">
                   {service.title}
                 </span>
               </Link>
