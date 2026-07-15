@@ -4,8 +4,10 @@ import { motion } from "framer-motion";
 import { useTranslations, useLocale } from "next-intl";
 import PremiumButton from "@/components/ui/PremiumButton";
 import HeroPhotoPanel from "@/components/sections/hero/HeroPhotoPanel";
-import HeroProgramsPanel, { HeroWorkshopCard } from "@/components/sections/hero/HeroProgramsPanel";
+import HeroProgramsPanel from "@/components/sections/hero/HeroProgramsPanel";
+import HeroRightProgramsPanel from "@/components/sections/hero/HeroRightProgramsPanel";
 import HeroEmpathyRotator from "@/components/sections/hero/HeroEmpathyRotator";
+import { HeroWorkshopCard } from "@/components/sections/hero/HeroProgramsPanel";
 import PumaHeroBackdrop from "@/components/puma/PumaHeroBackdrop";
 import { apiFetch, parseJsonResponse } from "@/lib/api-client";
 import { EASE_LUXURY } from "@/lib/motion";
@@ -50,11 +52,11 @@ export default function HeroSection() {
           </motion.h2>
         </div>
 
-        {/* Two columns: LEFT the coach (photo + who-I-am + the primary CTA
-            beneath it, per the layout sketch), RIGHT the emotional beat + her
-            services as a symmetric grid — filling the canvas so the hero reads
+        {/* Three columns: LEFT the coach (photo + who-I-am + the primary CTA
+            beneath it, per the layout sketch), MIDDLE the emotional beat,
+            RIGHT the course programme — filling the canvas so the hero reads
             confident and full rather than sparse. */}
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.82fr)_minmax(0,1.18fr)] gap-10 lg:gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.75fr)_minmax(0,1fr)_minmax(0,1.1fr)] gap-8 lg:gap-12 items-start">
           {/* LEFT — photo + identity + book-a-session CTA */}
           <div className="order-2 lg:order-1 flex flex-col gap-6">
             <HeroPhotoPanel />
@@ -75,17 +77,16 @@ export default function HeroSection() {
             </motion.div>
           </div>
 
-          {/* RIGHT — empathy beat + featured-workshop highlight */}
+          {/* MIDDLE — empathy beat + featured-workshop highlight */}
           <div className="order-1 lg:order-2 flex flex-col gap-8 lg:gap-10">
             <HeroEmpathyRotator />
             <HeroWorkshopCard workshop={workshop} />
           </div>
-        </div>
 
-        {/* BOTTOM — the course programme, spread horizontally across the base
-            of the hero (per the client's layout sketch). */}
-        <div className="mt-12 lg:mt-16">
-          <HeroProgramsPanel />
+          {/* RIGHT — course programme vertical */}
+          <div className="order-3 lg:order-3">
+            <HeroRightProgramsPanel />
+          </div>
         </div>
       </div>
     </section>

@@ -40,13 +40,13 @@ export default function HeroPhotoPanel() {
       <div className="relative w-full">
         {/* Gradient hairline frame — a soft lavender→gold border */}
         <div className="relative w-full rounded-[2.2rem] p-[3px] bg-gradient-to-br from-lav-300/80 via-white/50 to-gold-300/80 shadow-strong">
-          <div className="relative w-full overflow-hidden rounded-[2rem] ring-1 ring-white/50 aspect-[4/5]">
+          <div className="relative w-full overflow-hidden rounded-[2rem] ring-1 ring-white/50 aspect-[3/5]">
             <Image
               src="/newherosectionpik.png"
               alt={`${founderName} — The Pouma Academy`}
               fill
               priority
-              sizes="(max-width: 1024px) 80vw, 34vw"
+              sizes="(max-width: 1024px) 80vw, 32vw"
               className="object-cover"
             />
             {/* Deep bottom gradient so the frosted facts panel stays legible. */}
@@ -71,31 +71,31 @@ export default function HeroPhotoPanel() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5, ease: EASE_LUXURY }}
-              className="absolute inset-x-3 bottom-3 rounded-[1.25rem] bg-white/12 border border-white/25 backdrop-blur-xl shadow-soft px-4 py-3 sm:px-4"
+              className="absolute inset-x-2 bottom-2 rounded-lg bg-white/12 border border-white/25 backdrop-blur-xl shadow-soft px-3 py-2 sm:px-3"
             >
               {/* Name plate + label on one compact row */}
-              <div className="flex items-end justify-between gap-3 mb-2">
-                <span className="font-display text-white text-base leading-tight drop-shadow-[0_2px_10px_rgba(20,11,40,0.6)]">
+              <div className="flex items-end justify-between gap-2 mb-1.5">
+                <span className="font-display text-white text-sm leading-tight drop-shadow-[0_2px_10px_rgba(20,11,40,0.6)]">
                   {founderName}
                 </span>
-                <span className="text-[9px] font-bold uppercase tracking-[0.18em] text-gold-100 whitespace-nowrap pb-0.5">
+                <span className="text-[8px] font-bold uppercase tracking-[0.15em] text-gold-100 whitespace-nowrap pb-0.5">
                   {t("aboutLabel")}
                 </span>
               </div>
 
-              <ul className="space-y-1">
+              <ul className="space-y-0.5">
                 {facts.map((fact, i) => (
                   <motion.li
                     key={fact}
                     initial={{ opacity: 0, x: -12 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.65 + i * 0.09, ease: EASE_LUXURY }}
-                    className="flex items-start gap-2"
+                    className="flex items-start gap-1.5"
                   >
-                    <span className="mt-[2px] flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded-full bg-gold-300/90 text-plum">
-                      <CheckIcon className="h-2 w-2" />
+                    <span className="mt-[1px] flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-gold-300/90 text-plum">
+                      <CheckIcon className="h-1.5 w-1.5" />
                     </span>
-                    <span className="text-[12px] leading-tight text-white/90 drop-shadow-[0_1px_6px_rgba(20,11,40,0.5)]">
+                    <span className="text-[10px] leading-tight text-white/90 drop-shadow-[0_1px_6px_rgba(20,11,40,0.5)]">
                       {fact}
                     </span>
                   </motion.li>
@@ -104,10 +104,10 @@ export default function HeroPhotoPanel() {
 
               <Link
                 href={`/${locale}/about`}
-                className="group mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold text-gold-100 hover:text-white transition-colors"
+                className="group mt-1.5 inline-flex items-center gap-1 text-[10px] font-semibold text-gold-100 hover:text-white transition-colors"
               >
                 {t("aboutMore")}
-                <ArrowIcon className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
+                <ArrowIcon className="w-2.5 h-2.5 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </motion.div>
           </div>

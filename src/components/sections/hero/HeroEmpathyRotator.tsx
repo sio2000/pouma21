@@ -40,14 +40,14 @@ export default function HeroEmpathyRotator() {
       {/* Small eyebrow that frames the rotating fears as a shared, familiar feeling. */}
       <div className="mb-3.5 flex items-center gap-2.5 justify-center lg:justify-start">
         <span className="h-px w-8 bg-gradient-to-r from-gold-400 to-transparent" aria-hidden />
-        <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-lav-700">
+        <span className="text-[13px] sm:text-sm font-bold uppercase tracking-[0.2em] text-lav-700">
           {eyebrow}
         </span>
       </div>
 
       {/* Compact glass card holding one rotating fear at a time — the "problem". */}
       <div
-        className="relative overflow-hidden rounded-[1.75rem] bg-white/60 backdrop-blur-md border border-lav-100 shadow-soft px-6 py-6 min-h-[8.5rem] flex items-center"
+        className="relative overflow-hidden rounded-[1.75rem] bg-white/60 backdrop-blur-md border border-lav-100 shadow-soft px-5 py-5 sm:px-6 sm:py-5 min-h-[7.5rem] flex items-center max-w-md"
         aria-live="polite"
       >
         <div
@@ -95,7 +95,7 @@ export default function HeroEmpathyRotator() {
           aria-hidden
         />
         <p className="pl-3 text-center lg:text-left">
-          <span className="font-script leading-none text-plum text-[clamp(1.7rem,2.6vw,2.35rem)] drop-shadow-[0_2px_14px_rgba(120,80,160,0.18)]">
+          <span className="font-script leading-none text-plum text-[clamp(1.1rem,1.5vw,1.4rem)] drop-shadow-[0_2px_14px_rgba(120,80,160,0.18)]">
             {label}
           </span>
           <span className="mt-2.5 block text-[clamp(1rem,1.15vw,1.15rem)] leading-relaxed text-plum/80">
