@@ -40,17 +40,18 @@ export default function HeroPhotoPanel() {
       <div className="relative w-full">
         {/* Gradient hairline frame — a soft lavender→gold border */}
         <div className="relative w-full rounded-[2.2rem] p-[3px] bg-gradient-to-br from-lav-300/80 via-white/50 to-gold-300/80 shadow-strong">
-          <div className="relative w-full overflow-hidden rounded-[2rem] ring-1 ring-white/50 aspect-[3/5]">
+          <div className="relative w-full overflow-hidden rounded-[2rem] ring-1 ring-white/50 aspect-[3/4]">
             <Image
               src="/newherosectionpik.png"
               alt={`${founderName} — The Pouma Academy`}
               fill
               priority
-              sizes="(max-width: 1024px) 80vw, 32vw"
-              className="object-cover"
+              sizes="(max-width: 1024px) 90vw, 42vw"
+              className="object-cover object-top"
             />
-            {/* Deep bottom gradient so the frosted facts panel stays legible. */}
-            <div className="absolute inset-0 bg-gradient-to-t from-plum/85 via-plum/25 to-transparent" />
+            {/* Soft, shallow bottom gradient — only enough to keep the compact
+                facts panel legible, without covering her body. */}
+            <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-plum/80 via-plum/20 to-transparent" />
 
             {/* Top-left glass badge — two-word identity */}
             <motion.div
@@ -71,14 +72,14 @@ export default function HeroPhotoPanel() {
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5, ease: EASE_LUXURY }}
-              className="absolute inset-x-2 bottom-2 rounded-lg bg-white/12 border border-white/25 backdrop-blur-xl shadow-soft px-3 py-2 sm:px-3"
+              className="absolute inset-x-1.5 bottom-1.5 rounded-lg bg-white/10 border border-white/25 backdrop-blur-xl shadow-soft px-3 py-1.5 sm:px-3"
             >
               {/* Name plate + label on one compact row */}
               <div className="flex items-end justify-between gap-2 mb-1.5">
-                <span className="font-display text-white text-sm leading-tight drop-shadow-[0_2px_10px_rgba(20,11,40,0.6)]">
+                <span className="font-display text-white text-base sm:text-lg leading-tight drop-shadow-[0_2px_10px_rgba(20,11,40,0.6)]">
                   {founderName}
                 </span>
-                <span className="text-[8px] font-bold uppercase tracking-[0.15em] text-gold-100 whitespace-nowrap pb-0.5">
+                <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-gold-100 whitespace-nowrap pb-0.5">
                   {t("aboutLabel")}
                 </span>
               </div>
@@ -92,10 +93,10 @@ export default function HeroPhotoPanel() {
                     transition={{ duration: 0.5, delay: 0.65 + i * 0.09, ease: EASE_LUXURY }}
                     className="flex items-start gap-1.5"
                   >
-                    <span className="mt-[1px] flex h-3 w-3 flex-shrink-0 items-center justify-center rounded-full bg-gold-300/90 text-plum">
-                      <CheckIcon className="h-1.5 w-1.5" />
+                    <span className="mt-[1px] flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded-full bg-gold-300/90 text-plum">
+                      <CheckIcon className="h-2 w-2" />
                     </span>
-                    <span className="text-[10px] leading-tight text-white/90 drop-shadow-[0_1px_6px_rgba(20,11,40,0.5)]">
+                    <span className="text-[12px] sm:text-[13px] leading-snug text-white/90 drop-shadow-[0_1px_6px_rgba(20,11,40,0.5)]">
                       {fact}
                     </span>
                   </motion.li>
@@ -104,10 +105,10 @@ export default function HeroPhotoPanel() {
 
               <Link
                 href={`/${locale}/about`}
-                className="group mt-1.5 inline-flex items-center gap-1 text-[10px] font-semibold text-gold-100 hover:text-white transition-colors"
+                className="group mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-100 hover:text-white transition-colors"
               >
                 {t("aboutMore")}
-                <ArrowIcon className="w-2.5 h-2.5 transition-transform group-hover:translate-x-0.5" />
+                <ArrowIcon className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
               </Link>
             </motion.div>
           </div>

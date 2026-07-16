@@ -3,16 +3,9 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
-import { getWorkshopContent } from "@/lib/workshops/content";
 import { EASE_LUXURY } from "@/lib/motion";
 
 type Service = { title: string };
-
-const ArrowIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden>
-    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-  </svg>
-);
 
 /** One distinct icon per service, in order, so each card has its own identity. */
 const SERVICE_ICONS = [
@@ -48,38 +41,12 @@ const SERVICE_ICONS = [
   </g>,
 ];
 
-/** Rotating accent palette so the grid reads colourful yet cohesive. */
-const ACCENTS = [
-  {
-    bar: "from-lav-400 via-lav-500 to-lav-600",
-    tint: "from-white via-white to-lav-50",
-    chip: "from-lav-500 to-lav-700",
-    num: "text-lav-500/30",
-    hoverBorder: "hover:border-lav-400",
-  },
-  {
-    bar: "from-gold-300 via-gold-400 to-kroke-400",
-    tint: "from-white via-white to-gold-200/40",
-    chip: "from-gold-300 to-gold-500",
-    num: "text-gold-500/35",
-    hoverBorder: "hover:border-gold-400",
-  },
-  {
-    bar: "from-lav-600 via-plum to-lav-700",
-    tint: "from-white via-white to-lav-100/70",
-    chip: "from-plum to-lav-700",
-    num: "text-plum/25",
-    hoverBorder: "hover:border-lav-500",
-  },
-];
-
 /**
- * Vertical course programme panel for the hero right section.
- * Displays the programmes in a 2-column grid with clean card design.
+ * Full-width programme grid shown beneath the hero. Each card mirrors the gold
+ * "intro" cards (Ξέρεις Αγγλικά… section): white/blur base, gold border + wash
+ * on hover, a sweeping shine, a gold icon tile and a large ghost number.
  */
 export default function HeroRightProgramsPanel() {
-  const t = useTranslations("hero");
-  const tc = useTranslations("cta");
   const tComm = useTranslations("communication");
   const locale = useLocale();
 
@@ -87,97 +54,69 @@ export default function HeroRightProgramsPanel() {
 
   return (
     <div className="w-full">
-      <motion.div
-        initial={{ opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, delay: 0.4, ease: EASE_LUXURY }}
-        className="flex items-center gap-3 mb-5 justify-start"
-      >
-        <span className="h-px w-8 bg-gradient-to-r from-lav-400 to-transparent" aria-hidden />
-        <span className="text-xs font-bold uppercase tracking-[0.2em] text-lav-700">
-          {t("servicesLabel")}
-        </span>
-      </motion.div>
-
-      {/* 2-column grid with clean white cards with colors & effects — matching the reference image */}
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-        {services.map((service, i) => {
-          const accent = ACCENTS[i % ACCENTS.length];
-          return (
-            <motion.li
-              key={service.title}
-              initial={{ opacity: 0, y: 12, scale: 0.96 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.5 + i * 0.06, ease: EASE_LUXURY }}
-              whileHover={{ y: -3, scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="h-full"
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7 w-full">
+        {services.map((service, i) => (
+          <motion.li
+            key={service.title}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+            transition={{ duration: 0.6, delay: (i % 3) * 0.1, ease: EASE_LUXURY }}
+            whileHover={{
+              y: -10,
+              scale: 1.03,
+              transition: { type: "spring", stiffness: 320, damping: 18 },
+            }}
+            className="h-full"
+          >
+            <Link
+              href={`/${locale}/programs`}
+              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-lav-100 bg-white/90 backdrop-blur-sm p-7 md:p-8 shadow-soft transition-[border-color,background-color,box-shadow] duration-300 hover:border-gold-400 hover:bg-gold-200/40 hover:shadow-gold-glow"
             >
-              <Link
-                href={`/${locale}/programs`}
-                className={`group relative flex flex-col h-full min-h-[11rem] overflow-hidden rounded-[1.5rem] border border-white/50 bg-gradient-to-br ${accent.tint} px-5 py-5 shadow-[0_12px_42px_rgba(58,23,128,0.1)] hover:shadow-[0_20px_58px_rgba(58,23,128,0.16)] transition-all duration-300`}
-              >
-                {/* Colour bar across the top */}
-                <span
-                  className={`pointer-events-none absolute inset-x-0 top-0 h-1.5 bg-gradient-to-r ${accent.bar}`}
-                  aria-hidden
-                />
+              {/* Gold sweep that wipes across on hover */}
+              <span
+                className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold-300/35 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
+                aria-hidden
+              />
+              {/* Top accent bar grows in on hover */}
+              <span
+                className="pointer-events-none absolute left-0 top-0 h-[3px] w-full origin-left scale-x-0 bg-gradient-to-r from-gold-400 to-gold-300 transition-transform duration-400 ease-out group-hover:scale-x-100"
+                aria-hidden
+              />
 
-                {/* Gold wash on hover */}
+              <div className="relative flex items-center justify-between gap-4 mb-6">
                 <span
-                  className="pointer-events-none absolute inset-0 bg-gradient-to-br from-gold-200/70 via-gold-300/40 to-gold-400/50 opacity-0 transition-opacity duration-400 group-hover:opacity-100"
+                  className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-gold-200/70 to-lav-100 border border-gold-300/50 ring-1 ring-gold-200/50 text-gold-500 shadow-soft transition-colors duration-300 group-hover:from-gold-300/80 group-hover:text-gold-600"
                   aria-hidden
-                />
-
-                {/* Shine sweep on hover */}
-                <span
-                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/40 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
-                  aria-hidden
-                />
-
-                {/* Small decorative icon/number in top right */}
-                <div className="relative flex items-start justify-between mb-4 z-10">
-                  <span className={`${accent.num} text-sm font-semibold`}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
+                >
                   <svg
-                    width="20"
-                    height="20"
+                    width="26"
+                    height="26"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
                     strokeWidth={2}
-                    className="text-gold-300/70 transition-transform duration-300 group-hover:rotate-45 group-hover:text-gold-400"
-                    aria-hidden
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    {SERVICE_ICONS[i % SERVICE_ICONS.length]}
                   </svg>
-                </div>
-
-                {/* Service title */}
-                <span className="relative block font-sans font-bold text-base sm:text-lg leading-snug text-plum group-hover:text-plum/90 transition-colors z-10">
-                  {service.title}
                 </span>
-              </Link>
-            </motion.li>
-          );
-        })}
-      </ul>
+                <span
+                  className="method-num font-display text-[3.4rem] font-light leading-none tracking-tight"
+                  aria-hidden
+                >
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+              </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.9, ease: EASE_LUXURY }}
-        className="mt-4 flex justify-start"
-      >
-        <Link
-          href={`/${locale}/programs`}
-          className="inline-flex items-center gap-1 text-xs font-semibold text-lav-700 hover:text-lav-800 transition-colors"
-        >
-          Δες τα Προγράμματα
-          <ArrowIcon className="w-3 h-3" />
-        </Link>
-      </motion.div>
+              <h3 className="relative font-display text-[1.5rem] md:text-[1.7rem] text-plum leading-[1.15] tracking-tight">
+                {service.title}
+              </h3>
+            </Link>
+          </motion.li>
+        ))}
+      </ul>
     </div>
   );
 }
