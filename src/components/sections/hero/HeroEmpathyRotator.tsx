@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { EASE_LUXURY } from "@/lib/motion";
 
 const HOLD_MS = 2600;
@@ -15,6 +16,7 @@ const HOLD_MS = 2600;
  */
 export default function HeroEmpathyRotator() {
   const t = useTranslations("hero");
+  const locale = useLocale();
   const phrases = t.raw("empathy") as string[];
   const eyebrow = t("empathyEyebrow");
   const label = t("empathyLabel");
@@ -45,9 +47,10 @@ export default function HeroEmpathyRotator() {
         </span>
       </div>
 
-      {/* Compact glass card holding one rotating fear at a time — the "problem". */}
+      {/* Slim glass card holding one rotating fear at a time — the "problem".
+          Kept wide and short (spread in length, not height) per client request. */}
       <div
-        className="relative overflow-hidden rounded-[1.75rem] bg-white/60 backdrop-blur-md border border-lav-100 shadow-soft px-5 py-5 sm:px-6 sm:py-5 min-h-[7.5rem] flex items-center max-w-md"
+        className="relative overflow-hidden rounded-[1.4rem] bg-white/60 backdrop-blur-md border border-lav-100 shadow-soft px-5 py-3.5 sm:px-6 min-h-[4.25rem] flex items-center w-full max-w-2xl"
         aria-live="polite"
       >
         <div
@@ -61,7 +64,7 @@ export default function HeroEmpathyRotator() {
             animate={reduce ? { opacity: 1 } : { opacity: 1, y: 0, filter: "blur(0px)" }}
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: -12, filter: "blur(6px)" }}
             transition={{ duration: 0.5, ease: EASE_LUXURY }}
-            className="font-display italic text-[clamp(1.35rem,1.9vw,1.85rem)] leading-snug text-plum text-center lg:text-left"
+            className="font-display italic text-[clamp(1.15rem,1.55vw,1.5rem)] leading-snug text-plum text-center lg:text-left"
           >
             <span
               className="font-display not-italic text-gold-400 text-[1.4em] leading-none mr-1.5 align-[-0.3em]"
@@ -94,14 +97,23 @@ export default function HeroEmpathyRotator() {
           className="absolute inset-y-4 left-0 w-1 rounded-full bg-gradient-to-b from-gold-400 to-lav-400"
           aria-hidden
         />
-        <p className="pl-3 text-center lg:text-left">
+        <div className="pl-3 text-center lg:text-left">
           <span className="font-script leading-none text-plum text-[clamp(1.1rem,1.5vw,1.4rem)] drop-shadow-[0_2px_14px_rgba(120,80,160,0.18)]">
             {label}
           </span>
-          <span className="mt-2.5 block text-[clamp(1rem,1.15vw,1.15rem)] leading-relaxed text-plum/80">
+          <span className="mt-2 block text-[clamp(0.98rem,1.1vw,1.1rem)] leading-snug text-plum/80">
             {answer}
           </span>
-        </p>
+          <Link
+            href={`/${locale}/about`}
+            className="group mt-3 inline-flex items-center gap-1.5 rounded-full bg-plum/5 border border-lav-200 px-4 py-1.5 text-[13px] font-semibold text-plum hover:bg-plum hover:text-white transition-colors"
+          >
+            {t("empathyMore")}
+            <svg className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2} aria-hidden>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </Link>
+        </div>
       </motion.div>
     </motion.div>
   );

@@ -157,7 +157,7 @@ export function DimitraVideoGrid({ compact = false }: { compact?: boolean }) {
       className={cn(
         "grid items-stretch",
         compact
-          ? "grid-cols-3 gap-3 sm:gap-4 max-w-xl mx-auto"
+          ? "grid-cols-3 gap-4 sm:gap-6 max-w-3xl mx-auto"
           : "grid-cols-1 md:grid-cols-3 gap-8 md:gap-10"
       )}
     >
@@ -197,7 +197,7 @@ export function DimitraVideoGrid({ compact = false }: { compact?: boolean }) {
                 <span
                   className={cn(
                     "flex items-center justify-center rounded-full bg-white/90 text-lav-600 shadow-medium ring-1 ring-lav-300/70 border border-white/60 group-hover:scale-110 group-hover:ring-gold-300/70 transition-all duration-500",
-                    compact ? "w-9 h-9 md:w-10 md:h-10" : "w-12 h-12 md:w-14 md:h-14"
+                    compact ? "w-11 h-11 md:w-12 md:h-12" : "w-12 h-12 md:w-14 md:h-14"
                   )}
                 >
                   <PlayIcon className={compact ? "w-4 h-4 ml-0.5" : "w-5 h-5 ml-0.5"} />
@@ -207,7 +207,7 @@ export function DimitraVideoGrid({ compact = false }: { compact?: boolean }) {
                 <p
                   className={cn(
                     "font-display text-white leading-snug",
-                    compact ? "text-sm md:text-base" : "text-xl md:text-2xl"
+                    compact ? "text-base md:text-lg" : "text-xl md:text-2xl"
                   )}
                 >
                   {titles[video.id]}

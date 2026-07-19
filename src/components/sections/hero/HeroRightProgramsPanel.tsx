@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { useLocale, useTranslations } from "next-intl";
 import { EASE_LUXURY } from "@/lib/motion";
 
-type Service = { title: string };
+type Service = { title: string; emotion?: string };
 
 /** One distinct icon per service, in order, so each card has its own identity. */
 const SERVICE_ICONS = [
@@ -54,68 +54,118 @@ export default function HeroRightProgramsPanel() {
 
   return (
     <div className="w-full">
-      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-7 w-full">
-        {services.map((service, i) => (
-          <motion.li
-            key={service.title}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "0px 0px -10% 0px" }}
-            transition={{ duration: 0.6, delay: (i % 3) * 0.1, ease: EASE_LUXURY }}
-            whileHover={{
-              y: -10,
-              scale: 1.03,
-              transition: { type: "spring", stiffness: 320, damping: 18 },
-            }}
-            className="h-full"
-          >
-            <Link
-              href={`/${locale}/programs`}
-              className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-lav-100 bg-white/90 backdrop-blur-sm p-7 md:p-8 shadow-soft transition-[border-color,background-color,box-shadow] duration-300 hover:border-gold-400 hover:bg-gold-200/40 hover:shadow-gold-glow"
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5 w-full">
+        {services.map((service, i) => {
+          const flip = i === 0 && Boolean(service.emotion);
+
+          // The flip card: front shows the raw feeling, the back reveals the
+          // programme name — same font, size and colour as the other titles.
+          if (flip) {
+            return (
+              <motion.li
+                key={service.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+                transition={{ duration: 0.6, ease: EASE_LUXURY }}
+                className="h-full min-h-[130px] [perspective:1200px]"
+              >
+                <Link
+                  href={`/${locale}/programs`}
+                  className="group/flip relative block h-full min-h-[130px]"
+                >
+                  <span className="relative block h-full min-h-[130px] w-full transition-transform duration-700 [transform-style:preserve-3d] group-hover/flip:[transform:rotateY(180deg)]">
+                    {/* FRONT — the feeling */}
+                    <span className="absolute inset-0 flex flex-col justify-center rounded-2xl border border-lav-100 bg-gradient-to-br from-lav-50 to-gold-100/60 p-5 shadow-soft [backface-visibility:hidden]">
+                      <span className="mb-2 inline-flex h-8 w-8 items-center justify-center rounded-xl bg-gold-300/70 text-plum text-base" aria-hidden>
+                        ?
+                      </span>
+                      <span className="font-display text-[1.2rem] text-plum leading-[1.15] tracking-tight">
+                        {service.emotion}
+                      </span>
+                    </span>
+                    {/* BACK — the programme */}
+                    <span className="absolute inset-0 flex flex-col justify-between rounded-2xl border border-gold-400 bg-gold-200/50 p-5 shadow-gold-glow [transform:rotateY(180deg)] [backface-visibility:hidden]">
+                      <span
+                        className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-gold-300/80 to-lav-100 border border-gold-300/50 text-gold-600"
+                        aria-hidden
+                      >
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+                          {SERVICE_ICONS[0]}
+                        </svg>
+                      </span>
+                      <span className="font-display text-[1.2rem] text-plum leading-[1.15] tracking-tight">
+                        {service.title}
+                      </span>
+                    </span>
+                  </span>
+                </Link>
+              </motion.li>
+            );
+          }
+
+          return (
+            <motion.li
+              key={service.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "0px 0px -10% 0px" }}
+              transition={{ duration: 0.6, delay: (i % 3) * 0.08, ease: EASE_LUXURY }}
+              whileHover={{
+                y: -8,
+                scale: 1.02,
+                transition: { type: "spring", stiffness: 320, damping: 18 },
+              }}
+              className="h-full min-h-[130px]"
             >
-              {/* Gold sweep that wipes across on hover */}
-              <span
-                className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold-300/35 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
-                aria-hidden
-              />
-              {/* Top accent bar grows in on hover */}
-              <span
-                className="pointer-events-none absolute left-0 top-0 h-[3px] w-full origin-left scale-x-0 bg-gradient-to-r from-gold-400 to-gold-300 transition-transform duration-400 ease-out group-hover:scale-x-100"
-                aria-hidden
-              />
-
-              <div className="relative flex items-center justify-between gap-4 mb-6">
+              <Link
+                href={`/${locale}/programs`}
+                className="group relative flex h-full min-h-[130px] flex-col overflow-hidden rounded-2xl border border-lav-100 bg-white/90 backdrop-blur-sm p-5 shadow-soft transition-[border-color,background-color,box-shadow] duration-300 hover:border-gold-400 hover:bg-gold-200/40 hover:shadow-gold-glow"
+              >
+                {/* Gold sweep that wipes across on hover */}
                 <span
-                  className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-gold-200/70 to-lav-100 border border-gold-300/50 ring-1 ring-gold-200/50 text-gold-500 shadow-soft transition-colors duration-300 group-hover:from-gold-300/80 group-hover:text-gold-600"
+                  className="pointer-events-none absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-gold-300/35 to-transparent transition-transform duration-700 ease-out group-hover:translate-x-full"
                   aria-hidden
-                >
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                />
+                {/* Top accent bar grows in on hover */}
+                <span
+                  className="pointer-events-none absolute left-0 top-0 h-[3px] w-full origin-left scale-x-0 bg-gradient-to-r from-gold-400 to-gold-300 transition-transform duration-400 ease-out group-hover:scale-x-100"
+                  aria-hidden
+                />
+
+                <div className="relative flex items-center justify-between gap-3 mb-4">
+                  <span
+                    className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-gold-200/70 to-lav-100 border border-gold-300/50 ring-1 ring-gold-200/50 text-gold-500 shadow-soft transition-colors duration-300 group-hover:from-gold-300/80 group-hover:text-gold-600"
+                    aria-hidden
                   >
-                    {SERVICE_ICONS[i % SERVICE_ICONS.length]}
-                  </svg>
-                </span>
-                <span
-                  className="method-num font-display text-[3.4rem] font-light leading-none tracking-tight"
-                  aria-hidden
-                >
-                  {String(i + 1).padStart(2, "0")}
-                </span>
-              </div>
+                    <svg
+                      width="22"
+                      height="22"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      {SERVICE_ICONS[i % SERVICE_ICONS.length]}
+                    </svg>
+                  </span>
+                  <span
+                    className="method-num font-display text-[2.4rem] font-light leading-none tracking-tight"
+                    aria-hidden
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                </div>
 
-              <h3 className="relative font-display text-[1.5rem] md:text-[1.7rem] text-plum leading-[1.15] tracking-tight">
-                {service.title}
-              </h3>
-            </Link>
-          </motion.li>
-        ))}
+                <h3 className="relative font-display text-[1.2rem] text-plum leading-[1.15] tracking-tight">
+                  {service.title}
+                </h3>
+              </Link>
+            </motion.li>
+          );
+        })}
       </ul>
     </div>
   );

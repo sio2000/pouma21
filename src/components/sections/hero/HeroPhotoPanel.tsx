@@ -66,53 +66,56 @@ export default function HeroPhotoPanel() {
               </span>
             </motion.div>
 
-            {/* Frosted "who I am" panel anchored to the bottom of the image —
-                name plate + facts + more link, all sharing the photo's space. */}
-            <motion.div
-              initial={{ opacity: 0, y: 18 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5, ease: EASE_LUXURY }}
-              className="absolute inset-x-1.5 bottom-1.5 rounded-lg bg-white/10 border border-white/25 backdrop-blur-xl shadow-soft px-3 py-1.5 sm:px-3"
-            >
-              {/* Name plate + label on one compact row */}
-              <div className="flex items-end justify-between gap-2 mb-1.5">
-                <span className="font-display text-white text-base sm:text-lg leading-tight drop-shadow-[0_2px_10px_rgba(20,11,40,0.6)]">
-                  {founderName}
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-gold-100 whitespace-nowrap pb-0.5">
-                  {t("aboutLabel")}
-                </span>
-              </div>
-
-              <ul className="space-y-0.5">
-                {facts.map((fact, i) => (
-                  <motion.li
-                    key={fact}
-                    initial={{ opacity: 0, x: -12 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.65 + i * 0.09, ease: EASE_LUXURY }}
-                    className="flex items-start gap-1.5"
-                  >
-                    <span className="mt-[1px] flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded-full bg-gold-300/90 text-plum">
-                      <CheckIcon className="h-2 w-2" />
-                    </span>
-                    <span className="text-[12px] sm:text-[13px] leading-snug text-white/90 drop-shadow-[0_1px_6px_rgba(20,11,40,0.5)]">
-                      {fact}
-                    </span>
-                  </motion.li>
-                ))}
-              </ul>
-
-              <Link
-                href={`/${locale}/about`}
-                className="group mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold text-gold-100 hover:text-white transition-colors"
-              >
-                {t("aboutMore")}
-                <ArrowIcon className="w-3 h-3 transition-transform group-hover:translate-x-0.5" />
-              </Link>
-            </motion.div>
           </div>
         </div>
+
+        {/* Frosted "who I am" panel — deliberately un-aligned: it hangs off the
+            bottom-right of the frame, half inside / half outside the photo and
+            tilted a touch, for a hand-placed, "tsalakomeno" feel (client req). */}
+        <motion.div
+          initial={{ opacity: 0, y: 20, rotate: -3 }}
+          animate={{ opacity: 1, y: 0, rotate: -2 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: EASE_LUXURY }}
+          className="absolute -bottom-6 -right-4 left-6 sm:-right-6 sm:left-10 z-20 -rotate-2 rounded-xl bg-plum/35 border border-white/30 backdrop-blur-xl shadow-strong px-4 py-3"
+        >
+          {/* Name plate + label on one row, slightly off-kilter */}
+          <div className="flex items-end justify-between gap-2 mb-2">
+            <span className="font-display text-white text-base sm:text-lg leading-tight drop-shadow-[0_2px_10px_rgba(20,11,40,0.7)] -rotate-1">
+              {founderName}
+            </span>
+            <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-gold-100 whitespace-nowrap pb-0.5 rotate-1">
+              {t("aboutLabel")}
+            </span>
+          </div>
+
+          <ul className="space-y-1">
+            {facts.map((fact, i) => (
+              <motion.li
+                key={fact}
+                initial={{ opacity: 0, x: -12, rotate: [-0.8, 0.6, -0.4, 0.9][i % 4] }}
+                animate={{ opacity: 1, x: 0, rotate: [-0.8, 0.6, -0.4, 0.9][i % 4] }}
+                transition={{ duration: 0.5, delay: 0.65 + i * 0.09, ease: EASE_LUXURY }}
+                className="flex items-start gap-1.5"
+                style={{ marginLeft: `${(i % 2 === 0 ? 0 : 10) + (i === 3 ? 6 : 0)}px` }}
+              >
+                <span className="mt-[1px] flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded-full bg-gold-300/90 text-plum">
+                  <CheckIcon className="h-2 w-2" />
+                </span>
+                <span className="text-[12px] sm:text-[13px] leading-snug text-white/95 drop-shadow-[0_1px_6px_rgba(20,11,40,0.6)]">
+                  {fact}
+                </span>
+              </motion.li>
+            ))}
+          </ul>
+
+          <Link
+            href={`/${locale}/about`}
+            className="group mt-3 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-gold-300 to-gold-500 px-4 py-1.5 text-[13px] font-bold text-plum shadow-gold-glow hover:from-gold-200 hover:to-gold-400 transition-colors -rotate-1"
+          >
+            {t("aboutMore")}
+            <ArrowIcon className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </motion.div>
       </div>
     </motion.div>
   );

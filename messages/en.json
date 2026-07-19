@@ -43,7 +43,10 @@
     "founderIntro2": "I teach you to express yourself in English with confidence.",
     "empathyEyebrow": "Sound familiar?",
     "empathyLabel": "This happens because…",
-    "empathyAnswer": "…you learned English for exams, not to actually speak it. Here we change that: in boutique groups of 3–4 we build your expression and confidence, so you speak naturally, from your very first day.",
+    "empathyAnswer": "You learned English for exams — not to actually speak it. Here we change that.",
+    "empathyAnswerFull": "…you learned English for exams, not to actually speak it. Here we change that: in boutique groups of 3–4 we build your expression and confidence, so you speak naturally, from your very first day.",
+    "empathyMore": "Learn more",
+    "freeAssessment": "Get a free assessment",
     "empathy": [
       "I know, but I'm afraid.",
       "I think I'll say it wrong.",
@@ -62,11 +65,14 @@
     "aboutLabel": "Who I am",
     "aboutMore": "More about me",
     "aboutFacts": [
-      "19 years teaching across Greece, Europe & the USA",
+      "Years of experience across Greece, Europe & the USA",
       "Boutique groups of 3–4 people",
       "Focus on expression, not endless drills",
       "You speak English from day one"
-    ]
+    ],
+    "programsIntroEyebrow": "And now?",
+    "programsIntroLead": "You can speak about your thoughts, fears and goals",
+    "programsIntroRest": ", and together we build the path that fits you."
   },
   "intro": {
     "eyebrow": "Why The Pouma Academy",
@@ -177,6 +183,7 @@
     "skills": [
       {
         "title": "Professional Presentations",
+        "emotion": "Worried about the future of your job?",
         "detail": "Structure, flow, and presence for meetings, pitches, and conferences — so you sound confident and persuasive, not just grammatically correct."
       },
       {
